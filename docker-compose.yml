@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  reverseproxy:
+    image: nginx:1.23
+    ports:
+      - "443:443" 
+      - "80:80" 
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./fullchain1.pem:/etc/ssl/certs/fullchain1.pem
+      - ./privkey1.pem:/etc/ssl/private/privkey1.pem
+      # setup application we want to proxy, in this case image we created for express-app on port 3000 
+  express-app:
+    container_name: express-app
+    image: kornkitti/express-hello-world
+    expose:
+      - "8080"
